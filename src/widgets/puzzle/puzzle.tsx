@@ -7,8 +7,7 @@ import { PuzzleTemplate } from "../../shared/ui";
 export const Puzzle = () => {
   // TODO: (AM) обработать ошибки
   const { loading, data } = useQuery<TGetSentenceData>(GET_SENTENCE);
-  console.log("loading", loading);
-  console.log("data", data);
+
   return loading ? (
     <div>123</div>
   ) : (

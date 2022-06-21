@@ -45,7 +45,6 @@ export const PuzzleTemplate = ({ enSentence, ruSentence }) => {
   const handleUserAction = (str: string) => {
     setUserAnswer(str);
   };
-  console.log("userAnswer", userAnswer);
 
   const handleCheckClick = useCallback(() => {
     const isEqual = userAnswer === enSentence.toLowerCase();

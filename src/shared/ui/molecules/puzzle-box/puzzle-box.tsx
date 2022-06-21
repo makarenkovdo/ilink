@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { PuzzleElement } from "../../atoms";
 
 // fake data generator
 const getItems = (count, offset = 0) =>
@@ -40,20 +41,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 const grid = 5;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: "5px",
-  margin: `0 0 ${grid}px 0`,
-  height: "15px",
-  width: "30px",
-  fontSize: "12px",
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-  borderRadius: "30%",
-
-  // styles we need to apply on draggables
+const getItemStyle = (draggableStyle) => ({
   ...draggableStyle,
 });
 const getListStyle = (isDraggingOver) => ({
@@ -70,6 +58,7 @@ const getListStyle = (isDraggingOver) => ({
 
 type TDndTranslationBoxProps = {
   sentence: string;
+  handleChange: (userAnswer: string) => void;
 };
 
 export const PuzzleBox = ({
@@ -104,15 +93,9 @@ export const PuzzleBox = ({
 
       newState[sInd] = result[sInd];
       newState[dInd] = result[dInd];
-      console.log("newState", newState[1]);
-      console.log("state", state);
       handleChange(newState[0].map(({ content }) => content).join(" "));
-      console.log("newState[1].length", newState[1].length);
-      console.log("state[1].length", state[1].length);
       if (newState[1].length > state[1].length) {
-        console.log("!!!!!!!!!");
-
-        newState[1] = newState[1].sort();
+        newState[1] = newState[1].sort((a, b) => (a.id > b.id ? 1 : -1));
         setState(newState);
       } else setState(newState);
     }
@@ -142,19 +125,9 @@ export const PuzzleBox = ({
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style,
-                          )}
+                          style={getItemStyle(provided.draggableProps.style)}
                         >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-around",
-                            }}
-                          >
-                            {item.content}
-                          </div>
+                          <PuzzleElement>{item.content}</PuzzleElement>
                         </div>
                       )}
                     </Draggable>
