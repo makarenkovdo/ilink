@@ -12,13 +12,8 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// root.render(
-//   <React.StrictMode>
-//     <ApolloProvider client={client}>
-//       <HomePage isDragging text="some" />
-//     </ApolloProvider>
-//   </React.StrictMode>,
-// );
+// TODO: (AM) определить, почему синтаксис react18 не сработал с beautiful-dnd
+// TODO: (AM) выделить слой провайдеров
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
@@ -29,7 +24,3 @@ ReactDOM.render(
   </React.StrictMode>,
   rootElement,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
