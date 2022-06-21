@@ -9,7 +9,7 @@ export const Puzzle = () => {
   const { loading, data } = useQuery<TGetSentenceData>(GET_SENTENCE);
 
   return loading ? (
-    <div>123</div>
+    <div>Loading...</div>
   ) : (
     <PuzzleTemplate
       enSentence={data.sentence.en}

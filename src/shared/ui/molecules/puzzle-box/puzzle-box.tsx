@@ -1,13 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { PuzzleElement } from "../../atoms";
-
-// fake data generator
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
-    content: `item ${k + offset}`,
-  }));
 
 const createItems = (arr) =>
   arr.map((word, idx) => ({
@@ -68,10 +61,7 @@ export const PuzzleBox = ({
   const arrayOfWords = sentence.toLowerCase().split(" ").sort();
   const initialState = [arrayOfWords];
   const [state, setState] = useState([[], createItems(arrayOfWords)]);
-  // const actions: SnapDragActions = preDrag.snapLift();
-  // const { moveDown, moveUp, drop } = actions;
 
-  // await delay(moveDown);
   function onDragEnd(result) {
     const { source, destination } = result;
 
@@ -101,7 +91,7 @@ export const PuzzleBox = ({
     }
   }
 
-  // TODO: (AM) декомпозировать компонент
+  // TODO: (AM) декомпозировать компонент, выделить атомы, обернуть в styled
   return (
     <div>
       <div style={{ display: "grid", gridAutoFlow: "row" }}>
