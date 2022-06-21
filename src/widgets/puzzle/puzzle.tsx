@@ -1,4 +1,4 @@
-// TODO: (AM) aliases+ public api + fsd eslint plugin
+// TODO: (AM) aliases for layers  + fsd eslint plugin
 import { useQuery } from "@apollo/client";
 import { GET_SENTENCE } from "../../shared/api";
 import type { TGetSentenceData } from "../../shared/api";

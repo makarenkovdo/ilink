@@ -8,6 +8,12 @@ const getItems = (count, offset = 0) =>
     content: `item ${k + offset}`,
   }));
 
+const createItems = (arr) =>
+  arr.map((word, idx) => ({
+    id: `item-${idx}-${new Date().getTime()}`,
+    content: word,
+  }));
+
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -37,8 +43,11 @@ const grid = 5;
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
-  padding: grid * 2,
+  padding: "5px",
   margin: `0 0 ${grid}px 0`,
+  height: "15px",
+  width: "30px",
+  fontSize: "12px",
 
   // change background colour if dragging
   background: isDragging ? "lightgreen" : "grey",
@@ -48,23 +57,32 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 const getListStyle = (isDraggingOver) => ({
+  display: "grid",
+  width: 450,
+  gridTemplateColumns: "repeat(10, 40px)",
+  gridTemplateRows: "30px",
+  gridAutoFlow: "column",
+  gap: "5px",
   background: isDraggingOver ? "lightblue" : "lightgrey",
   padding: grid,
-  width: 450,
-  display: "grid",
-  gridAutoFlow: "column",
-  gap: "10px",
+  borderBottom: "1px solid black",
 });
 
 type TDndTranslationBoxProps = {
   sentence: string;
 };
 
-export const PuzzleBox = ({ sentence }: TDndTranslationBoxProps) => {
-  const arrayOfWords = sentence.toLowerCase().split(" ");
-  const initialState = [getItems(10), getItems(5, 10)];
-  const [state, setState] = useState([getItems(10), getItems(5, 10)]);
-  console.log("initialState", initialState);
+export const PuzzleBox = ({
+  sentence,
+  handleChange,
+}: TDndTranslationBoxProps) => {
+  const arrayOfWords = sentence.toLowerCase().split(" ").sort();
+  const initialState = [arrayOfWords];
+  const [state, setState] = useState([[], createItems(arrayOfWords)]);
+  // const actions: SnapDragActions = preDrag.snapLift();
+  // const { moveDown, moveUp, drop } = actions;
+
+  // await delay(moveDown);
   function onDragEnd(result) {
     const { source, destination } = result;
 
@@ -77,19 +95,26 @@ export const PuzzleBox = ({ sentence }: TDndTranslationBoxProps) => {
 
     if (sInd === dInd) {
       const items = reorder(state[sInd], source.index, destination.index);
-      console.log("items", items);
       const newState = [...state];
       newState[sInd] = items;
-      console.log("newState", newState);
       setState(newState);
     } else {
       const result = move(state[sInd], state[dInd], source, destination);
-      console.log("result", result);
       const newState = [...state];
+
       newState[sInd] = result[sInd];
       newState[dInd] = result[dInd];
+      console.log("newState", newState[1]);
+      console.log("state", state);
+      handleChange(newState[0].map(({ content }) => content).join(" "));
+      console.log("newState[1].length", newState[1].length);
+      console.log("state[1].length", state[1].length);
+      if (newState[1].length > state[1].length) {
+        console.log("!!!!!!!!!");
 
-      setState(newState.filter((group) => group.length));
+        newState[1] = newState[1].sort();
+        setState(newState);
+      } else setState(newState);
     }
   }
 

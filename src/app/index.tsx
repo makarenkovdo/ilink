@@ -12,7 +12,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// TODO: (AM) определить, почему синтаксис react18 не сработал с beautiful-dnd
+// TODO: (AM) определить, почему синтаксис react18 не сработал с beautiful-dnd ИЛИ временно перейти на react 17.0.2
 // TODO: (AM) выделить слой провайдеров
 
 const rootElement = document.getElementById("root");
